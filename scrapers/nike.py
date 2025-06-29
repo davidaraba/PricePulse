@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from core.product import Product
 
-def scrape_nike_store(url: str, keywords: list[str]) -> list[dict]:
+def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
 
@@ -35,11 +36,14 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[dict]:
         
         for kw in keywords:
             if kw.lower() in name.lower():
-                matches.append({
-                    "name" : name,
-                    "original price" : original_price, 
-                    "sale price" : sale_price,
-                    "discount percentage" : discount,
-                    "card" : card
-                })
+                product = Product(
+                    name=name,
+                    sale_price=sale_price,
+                    original_price=original_price,
+                    discount_percentage=discount,
+                    store="Nike",
+                    link=""  
+                )
+                matches.append(product)
+                break 
     return matches

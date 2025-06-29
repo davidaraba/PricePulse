@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Nike",
+    "url": "https://www.nike.com/au/w/mens-sale-3yaepznik1",
+    "keywords": ["nike shox ride 2", "nike air max 95"]
+  },
+  {
+    "name": "Adidas",
+    "url": "https://www.subtypestore.com/au/categories/sale/mens-sale/mens-sale-footwear?pid=nav-sale-mens",
+    "keywords": []
+  },
+  {
+    "name": "Cotton On",
+    "url": "https://cottonon.com/AU/co/co-sale/sale-mens/",
+    "keywords": ["super baggy", "cropped"]
+  },
+  {
+    "name": "Subtype",
+    "url": "https://www.subtypestore.com/au/categories/sale/mens-sale/mens-sale-footwear",
+    "keywords": ["nike shox ride 2", "bw army lux"]
+  },
+  {
+    "name": "Asos",
+    "url": "https://www.asos.com/au/men/sale/cat/?cid=8409#nlid=mw|sale|shop+by+product|sale+view+all",
+    "keywords": [
+      "timberland premium 6inch boots in wheat tan nubuck",
+      "speedcat",
+      "camo"
+    ]
+  }
+]

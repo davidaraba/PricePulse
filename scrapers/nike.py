@@ -7,7 +7,7 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
     response = requests.get(url, headers=headers)
 
     soup = BeautifulSoup(response.text, "html.parser")
-    product_cards = soup.find_all("div", class_="product-card__info")
+    product_cards = soup.find_all("div", class_="product-card")
     matches = []
 
     for card in product_cards:
@@ -15,7 +15,14 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
         # break
         name_tag = card.find("div", class_="product-card__title")
         name = name_tag.get_text(strip=True) if name_tag else ""
+
+        link_tag = card.find("a", href = True)
         
+        if link_tag:
+            link = link_tag.get("href")
+        else:
+            link = ""
+
         original_price = card.find("div", class_="product-price au__styling is--striked-out css-0")
         sale_price = card.find("div", class_= "product-price is--current-price css-1mj7kho")
 
@@ -42,7 +49,7 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
                     original_price=original_price,
                     discount_percentage=discount,
                     store="Nike",
-                    link=""  
+                    link=link
                 )
                 matches.append(product)
                 break 

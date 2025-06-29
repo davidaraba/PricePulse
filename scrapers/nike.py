@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from core.product import Product
 
-def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
+def scrape_nike_store(url: str, keywords: list[str], max_price: float = None) -> list[Product]:
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
 
@@ -25,21 +25,15 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
 
         original_price = card.find("div", class_="product-price au__styling is--striked-out css-0")
         sale_price = card.find("div", class_= "product-price is--current-price css-1mj7kho")
-
-        if sale_price:
-            sale_price = float(sale_price.get_text(strip=True).replace("$", ""))
-        else:
-            sale_price = None
         
-        if original_price:
-            original_price = float(original_price.get_text(strip=True).replace("$", ""))
-        else:
-            original_price = sale_price 
+        sale_price = float(sale_price.get_text(strip=True).replace("$", "")) if sale_price else None 
+        original_price = float(original_price.get_text(strip=True).replace("$", "")) if original_price else sale_price
 
-        if sale_price and original_price and sale_price < original_price:
-            discount = round((1 - sale_price / original_price) * 100)
-        else:
-            discount = 0
+        if not in_budget(sale_price, max_price):
+            continue
+
+        discount = round((1 - sale_price / original_price) * 100) if sale_price and original_price and sale_price < original_price else 0
+
         
         for kw in keywords:
             if kw.lower() in name.lower():
@@ -54,3 +48,8 @@ def scrape_nike_store(url: str, keywords: list[str]) -> list[Product]:
                 matches.append(product)
                 break 
     return matches
+
+def in_budget(price, max_price) -> bool:
+    if max_price is None:
+        return True
+    return price <= max_price

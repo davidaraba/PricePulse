@@ -1,4 +1,4 @@
-# 🛍️ Sale Alert System
+# 🛍️ PricePulse
 
 An automated sale-tracking tool that monitors fashion retail websites for keyword-specific product discounts and sends real-time SMS alerts using the Twilio API.
 

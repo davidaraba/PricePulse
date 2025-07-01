@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from core.product import Product
 
-
 def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None) -> list[Product]:
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
@@ -30,6 +29,8 @@ def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None
 
         if not in_budget(sale_price, max_price):
             continue
+
+        discount = round((1 - sale_price / original_price) * 100) if sale_price and original_price and sale_price < original_price else 0
         
         for kw in keywords:
             if kw.lower() in name.lower():
@@ -38,16 +39,13 @@ def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None
                     name=name,
                     sale_price=sale_price,
                     original_price=original_price,
-                    discount_percentage="1",
+                    discount_percentage=discount,
                     store="Cotton On",
                     link=link
                 )
                 matches.append(co_product)
                 break
-    
     return matches
-
-
 
 def extract_price(tag) -> float:
     if not tag:

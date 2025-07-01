@@ -1,16 +1,37 @@
 from core.store_loader import load_store_data
-import requests
+from scrapers.nike import scrape_nike_store
+from scrapers.cottonon import scrape_cottonon_store
+from core.alert_sender import send_sms
+import time
 
-stores = load_store_data("store_list.json")
+start = time.time()
 
-for store in stores:
-    headers = {"User-Agent": "Mozilla/5.0"}
-    try:
-        response = requests.get(store["url"], headers=headers, timeout=10)
-        print(response.status_code)
-    except Exception as e:
-        print(f"❌ Failed to fetch {store['name']} - {e}")
-    print("🛒 Store:", store["name"])
-    print("🔗 URL:", store["url"])
-    print("🎯 Keywords:", store["keywords"])
-    print("-" * 40)
+store_scrapers = {
+    "Nike" : scrape_nike_store,
+    "Cotton On" : scrape_cottonon_store
+}
+
+store_list = load_store_data("store_list.json")
+
+for store in store_list:
+    name = store["name"]
+    url = store["url"]
+    keywords = store["keywords"]
+    scraper = store_scrapers.get(name)
+
+    if scraper:
+        matches = scraper(url, keywords, max_price=None)
+        if matches:
+            message_lines = [] 
+            for match in matches:
+                message_lines.append(
+                    f"🎯 {match.name}\n"
+                    f"💲 ${match.sale_price} ({match.discount_percentage}% off)\n"
+                    f"🔗 {match.link}\n"
+                )
+            full_message = "\n".join(message_lines)
+            # send_sms(full_message)
+            print(full_message)
+            
+end = time.time()
+print(f"⏱️ Runtime: {round(end - start, 2)} seconds")

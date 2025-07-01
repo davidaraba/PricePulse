@@ -28,6 +28,8 @@ def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None
         original_price = extract_price(original_price) or extract_price(sale_price)
         sale_price = extract_price(sale_price)
 
+        if not in_budget(sale_price, max_price):
+            continue
         
         for kw in keywords:
             if kw.lower() in name.lower():
@@ -57,3 +59,7 @@ def extract_price(tag) -> float:
         return None
     
 
+def in_budget(price, max_price) -> bool:
+    if max_price is None:
+        return True
+    return price <= max_price

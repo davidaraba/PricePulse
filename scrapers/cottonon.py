@@ -16,6 +16,14 @@ def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None
         name_tag = product.find("a", class_="name-link")
         name = name_tag.get_text(strip=True) if name_tag else ""
 
+        link_tag = product.find("a", href = True)
+
+        if link_tag:
+            link = link_tag.get("href")
+        else:
+            link = ""
+
+
         if name in seen_names:
             continue
         
@@ -29,7 +37,7 @@ def scrape_cottonon_store(url: str, keywords: list[str], max_price: float = None
                     original_price="1",
                     discount_percentage="1",
                     store="Cotton On",
-                    link="david"
+                    link=link
                 )
                 matches.append(cottonon_product)
                 break

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Nike",
+    "url": "https://www.nike.com/au/w/sale",
+    "keywords": ["dunk", "air force", "vomero"]
+  },
+  {
+    "name": "Cotton On",
+    "url": "https://cottonon.com/AU/co/co-sale/sale-mens/",
+    "keywords": ["baggy", "cargo"]
+  },
+  {
+    "name": "Subtype",
+    "url": "https://www.subtypestore.com/collections/sale",
+    "keywords": ["asics", "jordan", "campus"]
+  }
+]

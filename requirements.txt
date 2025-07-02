@@ -2,3 +2,5 @@ beautifulsoup4
 requests
 schedule
 twilio
+selenium
+webdriver-manager
